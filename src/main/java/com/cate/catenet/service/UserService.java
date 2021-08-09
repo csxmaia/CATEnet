@@ -9,4 +9,6 @@ public interface UserService {
     User create(User user) throws ApiResponseException;
 
     List<User> get(String statusUser, Long limit, Long page) throws ApiResponseException;
+
+    User blockUser(Long userId) throws ApiResponseException;
 }

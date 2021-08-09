@@ -68,4 +68,25 @@ public class UserController {
         }
     }
 
+    @DeleteMapping(value = "/{id}")
+    @ApiOperation(value = "Bloquear usuario", notes = "Por meio desse serviço será possivel bloquear o usuario informado")
+    public ResponseEntity blockUser(@PathVariable Long id) {
+        ApiResponseDTO apiResponseDTO = new ApiResponseDTO();
+
+        try {
+            User user = userService.blockUser(id);
+
+            apiResponseDTO.setStatus(HttpStatus.OK);
+            apiResponseDTO.setMessage("Usuario criado com sucesso");
+            //remover password
+            apiResponseDTO.setObject(user);
+
+            return ResponseEntity.status(apiResponseDTO.getStatus()).body(apiResponseDTO);
+        } catch (ApiResponseException e) {
+            apiResponseDTO.setStatus(e.getStatus());
+            apiResponseDTO.setMessage(e.getMessage());
+            return ResponseEntity.status(e.getStatus()).body(apiResponseDTO);
+        }
+    }
+
 }
