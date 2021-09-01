@@ -37,18 +37,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User signUp(User userVO) throws ApiResponseException {
-        try {
-            userVO.setStatus(StatusUserEnum.ENTRY_ACCESS.name());
-            userRepository.save(userVO);
-            return userVO;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new ApiResponseException("Erro ao realizar cadastro de usuario", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @Override
     public User blockUser(Long id) throws ApiResponseException {
         try {
             Optional<User> user = userRepository.findById(id);

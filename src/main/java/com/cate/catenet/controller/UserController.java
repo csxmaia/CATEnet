@@ -42,26 +42,6 @@ public class UserController {
         }
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(value = "Registro do usuario", notes = "Permite o auto registro do usuario, registrando-o como status inicial entry_access.")
-    public ResponseEntity signUp(@RequestBody User user) {
-        ApiResponseDTO apiResponseDTO = new ApiResponseDTO();
-
-        try {
-            User createdUser = userService.signUp(user);
-
-            apiResponseDTO.setStatus(HttpStatus.OK);
-            apiResponseDTO.setMessage("Registrado com sucesso, aguarde aprovação");
-            apiResponseDTO.setObject(createdUser);
-
-            return ResponseEntity.status(apiResponseDTO.getStatus()).body(apiResponseDTO);
-        } catch(ApiResponseException e) {
-            apiResponseDTO.setStatus(e.getStatus());
-            apiResponseDTO.setMessage(e.getMessage());
-            return ResponseEntity.status(e.getStatus()).body(apiResponseDTO);
-        }
-    }
-
     @DeleteMapping(value = "/{id}")
     @ApiOperation(value = "Bloquear usuario", notes = "Por meio desse serviço será possivel bloquear o usuario informado")
     public ResponseEntity blockUser(@PathVariable Long id) {
