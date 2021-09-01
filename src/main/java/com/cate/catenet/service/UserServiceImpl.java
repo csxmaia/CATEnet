@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -20,21 +21,9 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public User create(User userVO) throws ApiResponseException {
+    public List<User> get(String statusEnum) throws ApiResponseException {
         try {
-            userVO.setStatus(StatusUserEnum.ENTRY_ACCESS.name());
-            userRepository.save(userVO);
-            return userVO;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new ApiResponseException("Erro ao realizar cadastro de usuario", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @Override
-    public List<User> get(String statusEnum, Long limit, Long page) throws ApiResponseException {
-        try {
-            Optional<List<User>> user = userRepository.findByStatus(statusEnum);
+            Optional<List<User>> user = userRepository.findByStatus(statusEnum.toUpperCase());
 
             if(user.isEmpty()) {
                 throw new ApiResponseException("Nenhum usuario encontrado", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -44,6 +33,18 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             e.printStackTrace();
             throw new ApiResponseException("Erro ao realizar busca de usuarios", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public User signUp(User userVO) throws ApiResponseException {
+        try {
+            userVO.setStatus(StatusUserEnum.ENTRY_ACCESS.name());
+            userRepository.save(userVO);
+            return userVO;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ApiResponseException("Erro ao realizar cadastro de usuario", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

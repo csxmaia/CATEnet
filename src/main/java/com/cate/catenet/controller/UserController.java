@@ -23,45 +23,39 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(value = "Registro do usuario", notes = "Permite o auto registro do usuario, registrando-o como status inicial entry_access.")
-    public ResponseEntity create(@RequestBody User user) {
+    @GetMapping()
+    @ApiOperation(value = "Busca todos os usuarios", notes = "Por meio desse serviço o usuario terá acesso aos usuarios registrados no banco de dados")
+    public ResponseEntity get(@RequestParam(value = "userStatus", required = true) String statusUser) {
         ApiResponseDTO apiResponseDTO = new ApiResponseDTO();
 
         try {
-            userService.create(user);
+            List<User> user = userService.get(statusUser);
 
             apiResponseDTO.setStatus(HttpStatus.OK);
-            apiResponseDTO.setMessage("Usuario criado com sucesso");
-//            apiResponseDTO.setObject(createdUser);
+            apiResponseDTO.setObject(user);
 
             return ResponseEntity.status(apiResponseDTO.getStatus()).body(apiResponseDTO);
-        } catch(ApiResponseException e) {
+        } catch (ApiResponseException e) {
             apiResponseDTO.setStatus(e.getStatus());
             apiResponseDTO.setMessage(e.getMessage());
             return ResponseEntity.status(e.getStatus()).body(apiResponseDTO);
         }
     }
 
-    @GetMapping()
-    @ApiOperation(value = "Busca todos os usuarios", notes = "Por meio desse serviço o usuario terá acesso aos usuarios registrados no banco de dados")
-    public ResponseEntity get(
-            @RequestParam(value = "userStatus", required = true) String statusUser,
-            @RequestParam(value = "limit", required = false) Long limit,
-            @RequestParam(value = "page", required = false) Long page
-    ) {
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Registro do usuario", notes = "Permite o auto registro do usuario, registrando-o como status inicial entry_access.")
+    public ResponseEntity signUp(@RequestBody User user) {
         ApiResponseDTO apiResponseDTO = new ApiResponseDTO();
 
         try {
-            List<User> user = userService.get(statusUser, limit, page);
+            User createdUser = userService.signUp(user);
 
             apiResponseDTO.setStatus(HttpStatus.OK);
-            apiResponseDTO.setMessage("Usuario criado com sucesso");
-            //remover password
-            apiResponseDTO.setObject(user);
+            apiResponseDTO.setMessage("Registrado com sucesso, aguarde aprovação");
+            apiResponseDTO.setObject(createdUser);
 
             return ResponseEntity.status(apiResponseDTO.getStatus()).body(apiResponseDTO);
-        } catch (ApiResponseException e) {
+        } catch(ApiResponseException e) {
             apiResponseDTO.setStatus(e.getStatus());
             apiResponseDTO.setMessage(e.getMessage());
             return ResponseEntity.status(e.getStatus()).body(apiResponseDTO);
