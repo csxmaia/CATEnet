@@ -51,7 +51,7 @@ public class User {
     private String createdBy;
 
     @Column(name = "updated_at")
-    private LocalDateTime updated_at;
+    private LocalDateTime updatedAt;
 
     @Column(name = "updated_by")
     private String updatedBy;
