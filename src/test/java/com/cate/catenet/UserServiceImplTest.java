@@ -74,4 +74,19 @@ public class UserServiceImplTest {
         }
     }
 
+    @Test
+    public void deleteUser() throws ApiResponseException {
+        boolean response = userService.deleteUser(1L);
+        Assert.assertTrue(response);
+    }
+
+    @Test
+    public void notFoundUserDeleteUser() {
+        try {
+            boolean response = userService.deleteUser(999999999999999999L);
+        } catch (ApiResponseException e) {
+            Assert.assertEquals("Nenhum usuario encontrado", e.getMessage());
+        }
+    }
+
 }
