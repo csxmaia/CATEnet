@@ -61,7 +61,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping(value = "/solicitations")
+    @GetMapping(value = "/solicitations")
     @ApiOperation(value = "Busca solicitações", notes = "Por meio desse serviço será possivel buscar os usuarios que estão solicitando acesso (Status: ENTRY_ACCESS)")
     public ResponseEntity getSolicitations(@PathVariable Long id) {
         ApiResponseDTO apiResponseDTO = new ApiResponseDTO();
