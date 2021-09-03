@@ -15,4 +15,6 @@ public interface UserService {
     List<User> getSolicitations() throws ApiResponseException;
 
     boolean aproveUser(Long userId) throws ApiResponseException;
+
+    boolean deleteUser(Long userId) throws ApiResponseException;
 }

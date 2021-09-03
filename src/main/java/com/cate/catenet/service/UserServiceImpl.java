@@ -115,4 +115,26 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public boolean deleteUser(Long id) throws ApiResponseException {
+        try {
+            Optional<User> user = userRepository.findById(id);
+
+            if(user.isEmpty()) {
+                throw new ApiResponseException("Nenhum usuario encontrado", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+            user.get().setStatus(StatusUserEnum.DELETED.name());
+
+            userRepository.save(user.get());
+
+            return true;
+        } catch (ApiResponseException e) {
+            throw new ApiResponseException(e.getMessage(), e.getStatus());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ApiResponseException("Erro ao deletar usuario", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
