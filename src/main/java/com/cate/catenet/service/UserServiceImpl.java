@@ -54,6 +54,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User edit(User user) throws ApiResponseException {
+        try {
+            Optional<User> userVO = userRepository.findById(user.getId());
+
+            if(userVO.isEmpty()) {
+                throw new ApiResponseException("Nenhum usuario encontrado", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+            userRepository.save(user);
+
+            return user;
+        } catch (ApiResponseException e) {
+            throw new ApiResponseException(e.getMessage(), e.getStatus());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ApiResponseException("Erro ao editar um usuario", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
     public boolean blockUser(Long id) throws ApiResponseException {
         try {
             Optional<User> user = userRepository.findById(id);

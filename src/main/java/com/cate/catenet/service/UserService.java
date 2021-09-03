@@ -10,6 +10,8 @@ public interface UserService {
 
     User registerTempUser(User user) throws ApiResponseException;
 
+    User edit(User user) throws ApiResponseException;
+
     boolean blockUser(Long userId) throws ApiResponseException;
 
     List<User> getSolicitations() throws ApiResponseException;

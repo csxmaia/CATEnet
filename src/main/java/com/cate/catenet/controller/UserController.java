@@ -42,8 +42,8 @@ public class UserController {
         }
     }
 
-    @PostMapping(value = "/solicitations")
-    @ApiOperation(value = "Busca solicitações", notes = "Por meio desse serviço será possivel buscar os usuarios que estão solicitando acesso (Status: ENTRY_ACCESS)")
+    @PostMapping(value = "/registerTempUser")
+    @ApiOperation(value = "Registra um usuario temporario", notes = "Por meio desse serviço será possivel registrar um usuario temporario")
     public ResponseEntity registerTempUser(@RequestBody User user) {
         ApiResponseDTO apiResponseDTO = new ApiResponseDTO();
 
@@ -52,6 +52,26 @@ public class UserController {
 
             apiResponseDTO.setStatus(HttpStatus.OK);
             apiResponseDTO.setMessage("Usuario criado com sucesso");
+            apiResponseDTO.setObject(userResponse);
+
+            return ResponseEntity.status(apiResponseDTO.getStatus()).body(apiResponseDTO);
+        } catch (ApiResponseException e) {
+            apiResponseDTO.setStatus(e.getStatus());
+            apiResponseDTO.setMessage(e.getMessage());
+            return ResponseEntity.status(e.getStatus()).body(apiResponseDTO);
+        }
+    }
+
+    @PutMapping()
+    @ApiOperation(value = "Editar usuario", notes = "Por meio desse serviço será possivel editar as informações de um usuario")
+    public ResponseEntity edit(@RequestBody User user) {
+        ApiResponseDTO apiResponseDTO = new ApiResponseDTO();
+
+        try {
+            User userResponse = userService.registerTempUser(user);
+
+            apiResponseDTO.setStatus(HttpStatus.OK);
+            apiResponseDTO.setMessage("Usuario editado com sucesso");
             apiResponseDTO.setObject(userResponse);
 
             return ResponseEntity.status(apiResponseDTO.getStatus()).body(apiResponseDTO);
