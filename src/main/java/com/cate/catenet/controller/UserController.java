@@ -42,6 +42,26 @@ public class UserController {
         }
     }
 
+    @PostMapping(value = "/solicitations")
+    @ApiOperation(value = "Busca solicitações", notes = "Por meio desse serviço será possivel buscar os usuarios que estão solicitando acesso (Status: ENTRY_ACCESS)")
+    public ResponseEntity registerTempUser(@RequestBody User user) {
+        ApiResponseDTO apiResponseDTO = new ApiResponseDTO();
+
+        try {
+            User userResponse = userService.registerTempUser(user);
+
+            apiResponseDTO.setStatus(HttpStatus.OK);
+            apiResponseDTO.setMessage("Usuario criado com sucesso");
+            apiResponseDTO.setObject(userResponse);
+
+            return ResponseEntity.status(apiResponseDTO.getStatus()).body(apiResponseDTO);
+        } catch (ApiResponseException e) {
+            apiResponseDTO.setStatus(e.getStatus());
+            apiResponseDTO.setMessage(e.getMessage());
+            return ResponseEntity.status(e.getStatus()).body(apiResponseDTO);
+        }
+    }
+
     @DeleteMapping(value = "/blockUser/{id}")
     @ApiOperation(value = "Bloquear usuario", notes = "Por meio desse serviço será possivel bloquear o usuario informado")
     public ResponseEntity blockUser(@PathVariable Long id) {
@@ -63,7 +83,7 @@ public class UserController {
 
     @GetMapping(value = "/solicitations")
     @ApiOperation(value = "Busca solicitações", notes = "Por meio desse serviço será possivel buscar os usuarios que estão solicitando acesso (Status: ENTRY_ACCESS)")
-    public ResponseEntity getSolicitations(@PathVariable Long id) {
+    public ResponseEntity getSolicitations() {
         ApiResponseDTO apiResponseDTO = new ApiResponseDTO();
 
         try {
