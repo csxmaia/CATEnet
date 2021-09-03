@@ -59,4 +59,19 @@ public class UserServiceImplTest {
         Assert.assertTrue(users.get(0).getStatus().equals(StatusUserEnum.ENTRY_ACCESS.name()));
     }
 
+    @Test
+    public void aproveUser() throws ApiResponseException {
+        boolean response = userService.aproveUser(1L);
+        Assert.assertTrue(response);
+    }
+
+    @Test
+    public void notFoundUserAproveUser() {
+        try {
+            boolean response = userService.aproveUser(999999999999999999L);
+        } catch (ApiResponseException e) {
+            Assert.assertEquals("Nenhum usuario encontrado", e.getMessage());
+        }
+    }
+
 }
