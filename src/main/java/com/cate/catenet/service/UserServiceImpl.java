@@ -92,4 +92,27 @@ public class UserServiceImpl implements UserService {
             throw new ApiResponseException("Erro ao bloquear usuario", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @Override
+    public boolean aproveUser(Long id) throws ApiResponseException {
+        try {
+            Optional<User> user = userRepository.findById(id);
+
+            if(user.isEmpty()) {
+                throw new ApiResponseException("Nenhum usuario encontrado", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+            user.get().setStatus(StatusUserEnum.ACTIVE.name());
+
+            userRepository.save(user.get());
+
+            return true;
+        } catch (ApiResponseException e) {
+            throw new ApiResponseException(e.getMessage(), e.getStatus());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ApiResponseException("Erro ao aprovar usuario", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

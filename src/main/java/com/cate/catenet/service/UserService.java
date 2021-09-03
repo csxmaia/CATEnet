@@ -13,4 +13,6 @@ public interface UserService {
     boolean blockUser(Long userId) throws ApiResponseException;
 
     List<User> getSolicitations() throws ApiResponseException;
+
+    boolean aproveUser(Long userId) throws ApiResponseException;
 }
