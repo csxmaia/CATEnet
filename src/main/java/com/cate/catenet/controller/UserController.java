@@ -42,7 +42,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/blockUser/{id}")
     @ApiOperation(value = "Bloquear usuario", notes = "Por meio desse serviço será possivel bloquear o usuario informado")
     public ResponseEntity blockUser(@PathVariable Long id) {
         ApiResponseDTO apiResponseDTO = new ApiResponseDTO();
@@ -72,6 +72,25 @@ public class UserController {
             apiResponseDTO.setStatus(HttpStatus.OK);
             apiResponseDTO.setMessage("Usuario bloqueado com sucesso");
             apiResponseDTO.setObject(userList);
+
+            return ResponseEntity.status(apiResponseDTO.getStatus()).body(apiResponseDTO);
+        } catch (ApiResponseException e) {
+            apiResponseDTO.setStatus(e.getStatus());
+            apiResponseDTO.setMessage(e.getMessage());
+            return ResponseEntity.status(e.getStatus()).body(apiResponseDTO);
+        }
+    }
+
+    @GetMapping(value = "/aprove/{id}")
+    @ApiOperation(value = "Aprovar usuario", notes = "Por meio desse serviço será possivel aprovar o usuario informado")
+    public ResponseEntity aproveUser(@PathVariable Long id) {
+        ApiResponseDTO apiResponseDTO = new ApiResponseDTO();
+
+        try {
+            userService.aproveUser(id);
+
+            apiResponseDTO.setStatus(HttpStatus.OK);
+            apiResponseDTO.setMessage("Usuario aprovado com sucesso");
 
             return ResponseEntity.status(apiResponseDTO.getStatus()).body(apiResponseDTO);
         } catch (ApiResponseException e) {
