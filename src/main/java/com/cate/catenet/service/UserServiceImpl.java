@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User blockUser(Long id) throws ApiResponseException {
+    public boolean blockUser(Long id) throws ApiResponseException {
         try {
             Optional<User> user = userRepository.findById(id);
 
@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
 
             userRepository.save(user.get());
 
-            return user.get();
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
             throw new ApiResponseException("Erro ao bloquear usuario", HttpStatus.INTERNAL_SERVER_ERROR);

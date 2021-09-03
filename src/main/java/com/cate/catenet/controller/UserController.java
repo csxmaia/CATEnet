@@ -48,12 +48,10 @@ public class UserController {
         ApiResponseDTO apiResponseDTO = new ApiResponseDTO();
 
         try {
-            User user = userService.blockUser(id);
+            userService.blockUser(id);
 
             apiResponseDTO.setStatus(HttpStatus.OK);
-            apiResponseDTO.setMessage("Usuario criado com sucesso");
-            //remover password
-            apiResponseDTO.setObject(user);
+            apiResponseDTO.setMessage("Usuario bloqueado com sucesso");
 
             return ResponseEntity.status(apiResponseDTO.getStatus()).body(apiResponseDTO);
         } catch (ApiResponseException e) {

@@ -10,5 +10,5 @@ public interface UserService {
 
     User registerTempUser(User user) throws ApiResponseException;
 
-    User blockUser(Long userId) throws ApiResponseException;
+    boolean blockUser(Long userId) throws ApiResponseException;
 }
