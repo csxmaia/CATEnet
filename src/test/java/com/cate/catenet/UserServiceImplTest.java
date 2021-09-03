@@ -41,4 +41,13 @@ public class UserServiceImplTest {
         Assert.assertTrue(response);
     }
 
+    @Test
+    public void notFoundUserBlockUser() {
+        try {
+            boolean response = userService.blockUser(999999999999999999L);
+        } catch (ApiResponseException e) {
+            Assert.assertEquals("Nenhum usuario encontrado", e.getMessage());
+        }
+    }
+
 }
