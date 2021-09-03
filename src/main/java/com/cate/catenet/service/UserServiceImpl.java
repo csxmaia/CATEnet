@@ -37,6 +37,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User registerTempUser(User user) throws ApiResponseException {
+        try {
+            if (user.getDescription().equals("")) {
+                throw new ApiResponseException("O campo de descrição deve ser preenchido em caso de criação de usuario anonimo", HttpStatus.BAD_REQUEST);
+            }
+
+            user.setStatus(StatusUserEnum.ACTIVE.name());
+            userRepository.save(user);
+            return user;
+        } catch (ApiResponseException e) {
+            throw new ApiResponseException(e.getMessage(), e.getStatus());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ApiResponseException("Erro ao realizar cadastro de usuario anonimo", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
     public User blockUser(Long id) throws ApiResponseException {
         try {
             Optional<User> user = userRepository.findById(id);

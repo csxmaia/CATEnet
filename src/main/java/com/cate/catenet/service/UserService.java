@@ -8,5 +8,7 @@ import java.util.List;
 public interface UserService {
     List<User> get(String statusEnum) throws ApiResponseException;
 
+    User registerTempUser(User user) throws ApiResponseException;
+
     User blockUser(Long userId) throws ApiResponseException;
 }
