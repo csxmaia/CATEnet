@@ -35,4 +35,10 @@ public class UserServiceImplTest {
         Assert.assertFalse(userResponse.getDescription() == null);
     }
 
+    @Test
+    public void blockUser() throws ApiResponseException {
+        boolean response = userService.blockUser(1L);
+        Assert.assertTrue(response);
+    }
+
 }
