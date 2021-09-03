@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -68,6 +67,26 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user.get());
 
             return true;
+        } catch (ApiResponseException e) {
+            throw new ApiResponseException(e.getMessage(), e.getStatus());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ApiResponseException("Erro ao bloquear usuario", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public List<User> getSolicitations() throws ApiResponseException {
+        try {
+            Optional<List<User>> userList = userRepository.findByStatus(StatusUserEnum.ENTRY_ACCESS.name());
+
+            if(userList.isEmpty()) {
+                throw new ApiResponseException("Nenhum usuario encontrado", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+            return userList.get();
+        } catch (ApiResponseException e) {
+            throw new ApiResponseException(e.getMessage(), e.getStatus());
         } catch (Exception e) {
             e.printStackTrace();
             throw new ApiResponseException("Erro ao bloquear usuario", HttpStatus.INTERNAL_SERVER_ERROR);

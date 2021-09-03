@@ -61,4 +61,24 @@ public class UserController {
         }
     }
 
+    @DeleteMapping(value = "/solicitations")
+    @ApiOperation(value = "Busca solicitações", notes = "Por meio desse serviço será possivel buscar os usuarios que estão solicitando acesso (Status: ENTRY_ACCESS)")
+    public ResponseEntity getSolicitations(@PathVariable Long id) {
+        ApiResponseDTO apiResponseDTO = new ApiResponseDTO();
+
+        try {
+            List<User> userList = userService.getSolicitations();
+
+            apiResponseDTO.setStatus(HttpStatus.OK);
+            apiResponseDTO.setMessage("Usuario bloqueado com sucesso");
+            apiResponseDTO.setObject(userList);
+
+            return ResponseEntity.status(apiResponseDTO.getStatus()).body(apiResponseDTO);
+        } catch (ApiResponseException e) {
+            apiResponseDTO.setStatus(e.getStatus());
+            apiResponseDTO.setMessage(e.getMessage());
+            return ResponseEntity.status(e.getStatus()).body(apiResponseDTO);
+        }
+    }
+
 }
